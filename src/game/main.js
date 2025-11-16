@@ -1,6 +1,5 @@
 import Phaser, { AUTO, Game } from 'phaser';
 import { Home } from './scenes/Home';
-import { Lobby } from './scenes/Lobby';
 import { Gameplay } from './scenes/Gameplay';
 
 const config = {
@@ -13,9 +12,13 @@ const config = {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH
     },
+
+    dom: {
+    createContainer: true
+    },
+
     scene: [
         Home,
-        Lobby,
         Gameplay
     ]
 };
