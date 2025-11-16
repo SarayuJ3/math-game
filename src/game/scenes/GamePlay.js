@@ -98,13 +98,16 @@ export class Gameplay extends Phaser.Scene {
     
     this.correctAnswer = answer;
 
-    this.problemText = this.add.text(cx, 725, question, {
+    this.problemText = this.add.dom(cx, 725, "div", {
       fontSize: "40px",
       backgroundColor: "#A7C7E7",
-      padding: { x: 40, y: 20 },
+      padding: "15px 20px",
       color: "#fff",
-      fontFamily: 'title-font'
-    }).setOrigin(0.5);
+      fontFamily: "title-font",
+      textAlign: "center",
+      borderRadius: "20px",
+      border: "1px solid #000"
+    }, question).setOrigin(0.5);
 
     if (this.questionType == 'trig'){
       this.createMC(choices, cx, cy);
@@ -114,7 +117,9 @@ export class Gameplay extends Phaser.Scene {
         type: "text",
         fontSize: "24px",
         width: "120px",
-        textAlign: "center"
+        textAlign: "center",
+        padding: "15px 40px",
+        borderRadius: "10px"
       }).setOrigin(0.5);
 
       this.answerBox.node.focus();
