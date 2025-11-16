@@ -64,7 +64,7 @@ export class Gameplay extends Phaser.Scene {
     this.escapeBtn.node.onmouseleave = () => this.escapeBtn.node.style.backgroundColor = "#333";
     this.escapeBtn.addListener('click');
     this.escapeBtn.on('click', () => {
-        this.scene.start('Home'); // replace 'Home' with your actual home scene key
+        this.scene.start('Home'); 
     });
 
     this.attackBtn = this.add.dom(cx, 900, "button", {
