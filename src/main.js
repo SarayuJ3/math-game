@@ -1,31 +1,7 @@
-import { Home } from './scenes/Start.js';
-import { Gameplay } from './scenes/Gameplay.js';
-import { Lobby } from './scenes/Lobby';
+import StartGame from './game/main';
 
-const config = {
-    type: Phaser.AUTO,
-    title: 'HAHAA',
-    description: '',
-    parent: 'game-container',
-    width: 1024,
-    height: 768,
-    backgroundColor: '#028af8',
-    pixelArt: false,
+document.addEventListener('DOMContentLoaded', () => {
 
-    dom: {
-    createContainer: true
-    },
+    StartGame('game-container');
 
-    scene: [
-        Home,
-        Lobby,
-        Gameplay
-    ],
-
-    scale: {
-        mode: Phaser.Scale.FIT,
-        autoCenter: Phaser.Scale.CENTER_BOTH
-    },
-}
-
-new Phaser.Game(config);
+});
