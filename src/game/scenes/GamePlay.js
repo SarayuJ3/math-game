@@ -260,6 +260,50 @@ export class Gameplay extends Phaser.Scene {
     }
   };
 
+  // BASIC impact effect and projectile firing
+
+  impactEffect(x, y) {
+    const flash = this.add.circle(x, y, 20, 0xffff55);
+    flash.setAlpha(0.8);
+  
+    this.tweens.add({
+      targets: flash,
+      scale: 2,
+      alpha: 0,
+      duration: 200,
+      onComplete: () => flash.destroy()
+    });
+  }
+
+  fireProjectile() {
+
+    // Starting position: the player's cannon
+    const startX = this.player.x + 100; // adjust depending on cannon position
+    const startY = this.player.y - 15;
+  
+    // Create projectile (change to sprite?)
+    const projectile = this.add.circle(startX, startY, 10, 0x808080 );
+    projectile.setDepth(5);
+  
+    // Target position: snake
+    const targetX = this.monster.x - 40; // slightly before the monster
+    const targetY = this.monster.y;
+  
+    // Animation
+    this.tweens.add({
+      targets: projectile,
+      x: targetX,
+      y: targetY,
+      duration: 300,
+      ease: "Power1",
+      onComplete: () => {
+        this.impactEffect(targetX, targetY);
+        projectile.destroy();
+      }
+    });
+  }
+
+
   submitAnswer() {
     const userAns = parseInt(this.answerBox.node.value);
 
@@ -269,10 +313,11 @@ export class Gameplay extends Phaser.Scene {
     if (userAns === this.correctAnswer) {
       this.tweens.add({
       targets: this.player,
-      x: this.player.x + 150,
+      x: this.player.x + 50,
       duration: 300,
       yoyo: true,
       onComplete: () => {
+        this.fireProjectile(); // fires projectile and impact effect on snek
         this.monsterHP -= 20;
         this.monsterHPText.setText("Monster HP: " + this.monsterHP);
         this.checkGameOver();
@@ -280,7 +325,7 @@ export class Gameplay extends Phaser.Scene {
     } else {
       this.tweens.add({
       targets: this.monster,
-      x: this.monster.x - 150,
+      x: this.monster.x - 100,
       duration: 300,
       yoyo: true,
       onComplete: () => {
@@ -301,7 +346,7 @@ export class Gameplay extends Phaser.Scene {
     if (isCorrect){
       this.tweens.add({
         targets: this.player,
-        x: this.player.x + 150,
+        x: this.player.x + 50,
         duration: 300,
         yoyo: true,
         onComplete: () => {
@@ -313,7 +358,7 @@ export class Gameplay extends Phaser.Scene {
     } else {
       this.tweens.add({
       targets: this.monster,
-      x: this.monster.x - 150,
+      x: this.monster.x - 100,
       duration: 300,
       yoyo: true,
       onComplete: () => {
