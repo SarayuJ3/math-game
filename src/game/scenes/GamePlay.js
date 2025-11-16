@@ -388,7 +388,9 @@ export class Gameplay extends Phaser.Scene {
       yoyo: true,
 
       onComplete: () => {
-        this.fireProjectile(); // fires projectile and impact effect on snek
+        if(this.questionType == "algebra"){
+            this.fireProjectile(); // fires projectile and impact effect on snek
+        }
         this.monsterHP -= 20;
         this.monsterHPText.setText("Monster HP: " + this.monsterHP);
         this.checkGameOver();
@@ -421,9 +423,7 @@ export class Gameplay extends Phaser.Scene {
         duration: 300,
         yoyo: true,
         onComplete: () => {
-          if(this.questionType == "algebra"){
-            this.fireProjectile(); // fires projectile and impact effect on snek
-          }
+          this.fireProjectile(); // fires projectile and impact effect on snek
           this.monsterHP -= 20;
           this.monsterHPText.setText("Monster HP: " + this.monsterHP);
           this.checkGameOver();
