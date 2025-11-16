@@ -9,6 +9,7 @@ export class Gameplay extends Phaser.Scene {
     this.load.image('background1', 'assets/battle-bg.png')
     this.load.image('mouse', 'assets/Mouse.png')
     this.load.image('snek', 'assets/Snek.png')
+    this.load.image('birb', 'assets/Bird.png')
   }
   
   create() {
@@ -93,8 +94,13 @@ export class Gameplay extends Phaser.Scene {
   }
 
   setupChars(cx, cy, spacing){
-    this.player = this.add.image(cx - spacing/2, cy + 60, 'mouse').setScale(0.05);
+    if(this.questionType == 'arithmetic'){
+      this.player = this.add.image(cx - spacing/2, cy + 60, 'birb').setScale(0.07);
+    } else {
+      this.player = this.add.image(cx - spacing/2, cy + 60, 'mouse').setScale(0.06);
+    }
     this.monster = this.add.image(cx + spacing/2, cy, 'snek').setScale(0.07);
+
   }
 
   startMathProblem() {
@@ -341,6 +347,7 @@ export class Gameplay extends Phaser.Scene {
       x: this.player.x + 50,
       duration: 300,
       yoyo: true,
+
       onComplete: () => {
         this.fireProjectile(); // fires projectile and impact effect on snek
         this.monsterHP -= 20;
