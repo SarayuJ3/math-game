@@ -2,15 +2,16 @@ export class Gameplay extends Phaser.Scene {
   constructor() { super('Gameplay'); }
 
   preload() {
-    this.load.image('background', 'assets/battle-bg.png')
+    this.load.image('background1', 'assets/battle-bg.png')
     this.load.image('mouse', 'assets/Mouse.png')
+    this.load.image('snek', 'assets/Snek.png')
   }
   
   create() {
     this.cameras.main.setBackgroundColor('#C1E1C1');
     const cx = this.cameras.main.centerX;
     const cy = this.cameras.main.centerY;
-    this.add.image(cx, cy, 'background');
+    this.add.image(cx, cy, 'background1');
     
     this.add.text(cx, 100, "Battle!", {
       fontSize: "80px",
@@ -20,14 +21,14 @@ export class Gameplay extends Phaser.Scene {
 
     const spacing = 700; // Distance between the two circles
     
-    this.player = this.add.image(cx - spacing/2, cy, 'mouse').setScale(0.09);
+    this.player = this.add.image(cx - spacing/2, cy + 60, 'mouse').setScale(0.05);
     this.playerHP = 100;
 
-    this.monster = this.add.circle(cx + spacing/2, cy - 75, 40, 0xff4444);
-    this.monsterHP = 100;
+    this.monster = this.add.image(cx + spacing/2, cy, 'snek').setScale(0.07);
+    this.monsterHP = 250;
 
     const playerHP = "Player HP: 100"
-    const monsterHP = "Monster HP: 100"
+    const monsterHP = "Monster HP: 250"
     this.playerHPText = this.add.text(cx - spacing/2, 200, playerHP, { fontSize: "50px", color: "#fff", fontFamily: 'title-font'}).setOrigin(0.5);
     this.monsterHPText = this.add.text(cx + spacing/2, 200, monsterHP, { fontSize: "50px", color: "#fff", fontFamily: 'title-font' }).setOrigin(0.5);
 
@@ -98,11 +99,26 @@ export class Gameplay extends Phaser.Scene {
     this.problemText.destroy();
 
     if (userAns === this.correctAnswer) {
-      this.monsterHP -= 20;
-      this.monsterHPText.setText("Monster HP: " + this.monsterHP);
+      this.tweens.add({
+      targets: this.player,
+      x: this.player.x + 150,
+      duration: 300,
+      yoyo: true,
+      onComplete: () => {
+        this.monsterHP -= 20;
+        this.monsterHPText.setText("Monster HP: " + this.monsterHP);
+      }})
     } else {
+      this.tweens.add({
+      targets: this.monster,
+      x: this.monster.x - 150,
+      duration: 300,
+      yoyo: true,
+      onComplete: () => {
       this.playerHP -= 20;
       this.playerHPText.setText("Player HP: " + this.playerHP);
+      }})
+
     }
 
     if (this.playerHP <= 0 || this.monsterHP <= 0) {

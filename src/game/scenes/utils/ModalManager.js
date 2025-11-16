@@ -1,7 +1,7 @@
 export class ModalManager {
     constructor(scene) {
       this.scene = scene;
-      this.modals = {}; // store modal definitions
+      this.modals = {};
     }
   
     createModal(key, config) {
@@ -13,79 +13,45 @@ export class ModalManager {
       const config = this.modals[key];
       if (!config) return;
   
-      // Create dark overlay
-      //const overlay = scene.add
-        //.rectangle(640, 360, 1280, 720, 0x000000, 0.5)
-        //.setInteractive()
-        //.setDepth(1000);
-  
-      // Create container for modal elements
-      //const modal = scene.add.container(640, 360).setDepth(1001);
+      const cx = scene.game.config.width / 2;
+      const cy = scene.game.config.height / 2;
 
-      const centerX = scene.game.config.width / 2;
-        const centerY = scene.game.config.height / 2;
+      // Dark overlay
+      const overlay = scene.add.rectangle(cx, cy, scene.game.config.width, scene.game.config.height, 0x000000, 0.6)
+        .setInteractive()
+        .setDepth(1000);
 
-        // overlay fills the whole screen
-        const overlay = scene.add.rectangle(
-  centerX,
-  centerY,
-  scene.game.config.width,
-  scene.game.config.height,
-  0x000000,
-  0.5
-        ).setInteractive().setDepth(1000);
-
-        // modal appears centered
-        const modal = scene.add.container(centerX, centerY).setDepth(1001);
+      // Modal container
+      const modal = scene.add.container(cx, cy-20).setDepth(1001);
   
-      // Modal background box
-      const box = scene.add
-        .rectangle(0, 0, 700, 400, 0xffffff)
-        .setStrokeStyle(4, 0x000000);
-  
+      // Rounded background box
+      const box = scene.add.graphics();
+      box.fillStyle(0xF2F3F5, 1);
+      box.fillRoundedRect(-440, -330, 900, 500, 20); 
+      box.lineStyle(3, 0x696969);
+      box.strokeRoundedRect(-440, -330, 900, 500, 20); 
       modal.add(box);
   
-      // Build items from config.itemsArr
+      // Add text items
       config.itemsArr.forEach(item => {
         if (item.type === "text") {
-          const t = scene.add.text(
-            item.offsetX || 0,
-            item.offsetY || 0,
-            item.content,
-            {
-              fontSize: item.fontSize || 32,
-              color: item.color || "#000",
-              fontFamily: item.fontFamily || "Arial",
-              align: "center"
-            }
-          ).setOrigin(0.5);
-  
+          const t = scene.add.text(item.offsetX || 0, item.offsetY || 0, item.content, {
+            fontSize: item.fontSize || 32,
+            color: item.color || "#696969",
+            fontFamily: item.fontFamily,
+            align: "center"
+          }).setOrigin(0.5);
           modal.add(t);
-        }
-  
-        if (item.type === "image") {
-          const img = scene.add.image(
-            item.offsetX || 0,
-            item.offsetY || 0,
-            item.content
-          ).setOrigin(0.5);
-  
-          if (item.contentScale) img.setScale(item.contentScale);
-  
-          if (item.callback)
-            img.setInteractive().on("pointerup", item.callback);
-  
-          modal.add(img);
         }
       });
   
-      // Close behavior
-      if (config.modalCloseOnInput) {
-        overlay.on("pointerup", () => this.hide(modal, overlay));
-        box.setInteractive().on("pointerup", () => this.hide(modal, overlay));
-      }
+      // Close on click
+      overlay.on("pointerup", () => {
+        modal.destroy();
+        overlay.destroy();
+      });
   
-      // Animate popup (optional)
+      // Popup animation
       modal.setScale(0);
       scene.tweens.add({
         targets: modal,
@@ -93,13 +59,5 @@ export class ModalManager {
         duration: 250,
         ease: "Back.easeOut"
       });
-  
-      // Track modal so we can close it
-      this.current = { modal, overlay };
-    }
-  
-    hide(modal, overlay) {
-      modal.destroy();
-      overlay.destroy();
     }
   }

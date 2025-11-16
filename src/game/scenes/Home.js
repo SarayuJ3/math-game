@@ -7,58 +7,101 @@ export class Home extends Phaser.Scene {
 
   preload() {
     this.load.font("title-font", "assets/AlmendraSC-Regular.ttf");
+    this.load.image('background', 'assets/title-screen.png')
   }
 
   create() {
-    this.cameras.main.setBackgroundColor("#ffd6e8");
-
-    // CENTER X
+    this.cameras.main.setBackgroundColor('#C1E1C1');
     const cx = this.cameras.main.centerX;
+    const cy = this.cameras.main.centerY;
+    this.add.image(cx, cy, 'background');
 
-    // TITLE
-    this.add
-      .text(cx, 140, "BATTLE START", {
-        fontSize: "64px",
-        color: "#000",
-        fontFamily: "title-font",
-      })
-      .setOrigin(0.5);
+    this.add.text(cx, 700, "Choose a Game Mode", {
+      fontSize: "60px",
+      color: "#0000",
+      fontFamily: "title-font"
+    })
+    .setOrigin(0.5)
 
-    // START BUTTON
-    const startBtn = this.add
-      .text(cx, 300, "Start Game", {
-        fontSize: "36px",
-        color: "#000",
-        fontFamily: "title-font",
-      })
-      .setOrigin(0.5)
-      .setPadding(15)
-      .setStyle({ backgroundColor: "#ffffff" })
-      .setInteractive();
+    //Quick Maths Button, using HTML formatting with dom :D
+    const MathBtn = this.add.dom(cx - 320, 800, 'button',
+      `
+      background: #D6D422; 
+      color: #696969; 
+      font-size: 50px; 
+      font-family: 'title-font'; 
+      padding: 20px 30px;  
+      border-radius: 15px; 
+      border: none;
+      cursor: pointer; 
+      transition: 0.2s;`,
+      'Quick Maths'
+    );
+    MathBtn.addListener('click');
+    MathBtn.on('click', () => this.scene.start("Gameplay", { questionType: "arithmetic" }));
+    MathBtn.node.onmouseenter = () => MathBtn.node.style.background = '#BFB51E';
+    MathBtn.node.onmouseleave = () => MathBtn.node.style.background = '#D6D422';
 
-    startBtn.on("pointerup", () => {
-      this.scene.start("Gameplay");
-    });
-
-    // RULES BUTTON UNDER START GAME
-    const rulesBtn = this.add
-      .text(cx, 380, "Rules", {
-        fontSize: "32px",
-        color: "#000",
-        fontFamily: "title-font",
-      })
-      .setOrigin(0.5)
-      .setPadding(12)
-      .setStyle({ backgroundColor: "#ffffff" })
-      .setInteractive();
-
-    rulesBtn.on("pointerup", () => {
-      this.modals.show("rules");
-    });
-
-    // CREATE MODAL MANAGER
+    //for rules, layering
     this.modals = new ModalManager(this);
     this.createModals();
+
+     //Algebra Button
+    const AlgBtn = this.add.dom(cx, 800, 'button',
+      `
+      background: #D68522; 
+      color: #696969; 
+      font-size: 50px; 
+      font-family: 'title-font'; 
+      padding: 20px 30px;  
+      border-radius: 15px; 
+      border: none;
+      cursor: pointer; 
+      transition: 0.2s;`,
+      'Algebra'
+    );
+    AlgBtn.addListener('click');
+    AlgBtn.on('click', () => this.scene.start("Gameplay", { questionType: "algebra" }));
+    AlgBtn.node.onmouseenter = () => AlgBtn.node.style.background = '#BF751E';
+    AlgBtn.node.onmouseleave = () => AlgBtn.node.style.background = '#D68522';
+
+     // Trigonometry Button
+    const TrigBtn = this.add.dom(cx + 320, 800, 'button',
+      `
+      background: #B31C21; 
+      color: #696969;
+      font-size: 50px; 
+      font-family: 'title-font'; 
+      padding: 20px 30px; 
+      border: none; 
+      border-radius: 15px; 
+      cursor: pointer; 
+      transition: 0.2s;`,
+      'Trigonometry'
+    );
+    TrigBtn.addListener('click');
+    TrigBtn.on('click', () => this.scene.start("Gameplay", { questionType: "trig" }));
+    TrigBtn.node.onmouseenter = () => TrigBtn.node.style.background = '#9E191D';
+    TrigBtn.node.onmouseleave = () => TrigBtn.node.style.background = '#B31C21';
+
+    // RULES BUTTON UNDER START GAME
+    const rulesBtn = this.add.dom(cx, 950, 'button',
+      `
+      background: #696969;
+      font-size: 32px;
+      color: #D6D422;
+      font-family: 'title-font';
+      padding: 15px 100px; 
+      border: none; 
+      border-radius: 15px; 
+      cursor: pointer;`,
+      'Rules'
+    );
+    rulesBtn.addListener('click');
+    rulesBtn.on('click', () => this.modals.show("rules"));
+    rulesBtn.node.onmouseenter = () => rulesBtn.node.style.background = '#e8e8e8';
+    rulesBtn.node.onmouseleave = () => rulesBtn.node.style.background = '#696969';
+    
   }
 
   createModals() {
@@ -66,6 +109,8 @@ export class Home extends Phaser.Scene {
     this.modals.createModal("rules", {
       modalCloseOnInput: true,
       x: cx,
+      color: 0xFFF8DC,
+      borderRadius: 20, 
       itemsArr: [
         {
           type: "text",
@@ -73,7 +118,7 @@ export class Home extends Phaser.Scene {
           fontSize: 42,
           color: "#000000",
           fontFamily: "title-font",
-          offsetY: -130,
+          offsetY: -250,
         },
         {
           type: "text",
@@ -84,7 +129,7 @@ export class Home extends Phaser.Scene {
           fontSize: 26,
           color: "#000000",
           fontFamily: "title-font",
-          offsetY: 0,
+          offsetY: -90,
         },
         {
           type: "text",
@@ -92,7 +137,7 @@ export class Home extends Phaser.Scene {
           fontSize: 18,
           color: "#555555",
           fontFamily: "title-font",
-          offsetY: 140,
+          offsetY: 120,
         },
       ],
     });
