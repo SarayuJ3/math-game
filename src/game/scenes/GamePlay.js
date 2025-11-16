@@ -86,6 +86,9 @@ export class Gameplay extends Phaser.Scene {
     this.attackBtn.on("pointerdown", () => {
       this.attackBtn.destroy(); //only rly for vibes idk
       this.startMathProblem();
+      if(this.questionType === 'arithmetic'){
+        this.startQuickMathsTimer();
+      }
     });
 
     // for input
@@ -101,6 +104,40 @@ export class Gameplay extends Phaser.Scene {
     }
     this.monster = this.add.image(cx + spacing/2, cy, 'snek').setScale(0.07);
 
+  }
+
+  startQuickMathsTimer() {
+    this.timeLeft = 60;
+    this.timerText = this.add.text(this.cameras.main.centerX + 800, 50, `Time: ${this.timeLeft}`, {
+      fontSize: "50px",
+      color: "#fff",
+      fontFamily: "title-font"
+    }).setOrigin(0.5);
+
+    this.quickMathsTimer = this.time.addEvent({
+      delay: 1000,
+      callback: () => {
+        this.timeLeft--;
+        this.timerText.setText(`Time: ${this.timeLeft}`);
+        if (this.timeLeft <= 0) {
+          this.endQuickMathsSession();
+        }
+      },
+      callbackScope: this,
+      loop: true
+    });
+  }
+
+  endQuickMathsSession() {
+    this.quickMathsTimer.remove(); // stop timer
+    if (this.timerText) this.timerText.destroy();
+
+    // Only win if monster HP is 0
+    if (this.monsterHP <= 0) {
+      this.scene.start('GameOver', { winner: 'Player', playerHP: this.playerHP, monsterHP: this.monsterHP });
+    } else {
+      this.scene.start('GameOver', { winner: 'Monster', playerHP: this.playerHP, monsterHP: this.monsterHP });
+    }
   }
 
   startMathProblem() {
