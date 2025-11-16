@@ -14,10 +14,10 @@ export class Gameplay extends Phaser.Scene {
     const cy = this.cameras.main.centerY; 
     const spacing = 700; // Distance between the two circles
     
-    this.player = this.add.circle(cx - spacing/2, cy + 15, 40, 0x00ccff);
+    this.player = this.add.circle(cx - spacing/2, cy - 75, 40, 0x00ccff);
     this.playerHP = 100;
 
-    this.monster = this.add.circle(cx + spacing/2, cy + 15, 40, 0xff4444);
+    this.monster = this.add.circle(cx + spacing/2, cy - 75, 40, 0xff4444);
     this.monsterHP = 100;
 
     const playerHP = "Player HP: 100"
@@ -98,7 +98,6 @@ export class Gameplay extends Phaser.Scene {
       this.flashSprite(this.player, 0xaaaaff);
     }
 
-    // Check if game over, otherwise continue with next question
     if (this.playerHP <= 0 || this.monsterHP <= 0) {
       this.time.delayedCall(500, () => {
         this.gameOver();
@@ -112,10 +111,8 @@ export class Gameplay extends Phaser.Scene {
   }
 
   gameOver() {
-    // Determine winner
     const winner = this.playerHP > 0 ? 'Player' : 'Monster';
     
-    // Pass data to GameOver scene
     this.scene.start('GameOver', { 
       winner: winner,
       playerHP: this.playerHP,
