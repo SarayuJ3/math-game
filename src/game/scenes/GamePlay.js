@@ -10,6 +10,7 @@ export class Gameplay extends Phaser.Scene {
     this.load.image('mouse', 'assets/Mouse.png')
     this.load.image('snek', 'assets/Snek.png')
     this.load.image('birb', 'assets/Bird.png')
+    this.load.image('lizarb', 'assets/lizard-wizard.png')
   }
   
   create() {
@@ -99,8 +100,10 @@ export class Gameplay extends Phaser.Scene {
   setupChars(cx, cy, spacing){
     if(this.questionType == 'arithmetic'){
       this.player = this.add.image(cx - spacing/2, cy + 60, 'birb').setScale(0.07);
-    } else {
+    } else if (this.questionType == 'trig'){
       this.player = this.add.image(cx - spacing/2, cy + 60, 'mouse').setScale(0.06);
+    } else {
+      this.player = this.add.image(cx - spacing/2, cy + 60, 'lizarb').setScale(0.2);
     }
     this.monster = this.add.image(cx + spacing/2, cy, 'snek').setScale(0.07);
 
