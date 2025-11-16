@@ -5,7 +5,7 @@ export class GameOver extends Phaser.Scene {
     this.winner = final.winner;
   }
     preload() {
-    this.load.image('endbg', 'assets/title-screen.png')
+    this.load.image('endbg', 'assets/blank-wall-light.png')
     this.load.image('endmouse', 'assets/mouse_end_scr.png')
     this.load.image('endsnek', 'assets/snake_end_scr.PNG')
     this.load.image('victory', 'assets/victory.png')
@@ -18,11 +18,11 @@ export class GameOver extends Phaser.Scene {
     this.add.image(cx, cy, 'endbg');
 
     if(this.winner == 'Player'){
-      this.add.image(cx + 650, 550, 'endmouse').setScale(.5);;
+      this.add.image(cx + 500, 550, 'endmouse').setScale(.5);;
       this.add.image(cx - 500, 300, 'victory').setScale(.3);
 
       this.add.text(cx - 400, 600, `${this.winner} wins!`, {
-      fontSize: "64px",
+      fontSize: "100px",
       color: "#fff",
       fontFamily: 'title-font'
     }).setOrigin(0.5);
@@ -30,7 +30,7 @@ export class GameOver extends Phaser.Scene {
     } else if(this.winner == 'Monster'){
       this.add.image(990, 700, 'endsnek');
 
-      this.add.text(cx, 40, "Game Over!", {
+      this.add.text(cx, 90, "Game Over!", {
       fontSize: "64px",
       color: "#fff",
       fontFamily: 'title-font'
