@@ -19,7 +19,7 @@ const config = {
 
     scene: [
         Home,
-        Gameplay
+        Gameplay,
     ]
 };
 
