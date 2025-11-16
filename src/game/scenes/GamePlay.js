@@ -42,7 +42,31 @@ export class Gameplay extends Phaser.Scene {
     this.playerHPText = this.add.text(cx - spacing/2, 200, playerHP, { fontSize: "50px", color: "#fff", fontFamily: 'title-font'}).setOrigin(0.5);
     this.monsterHPText = this.add.text(cx + spacing/2, 200, monsterHP, { fontSize: "50px", color: "#fff", fontFamily: 'title-font' }).setOrigin(0.5);
 
-   this.attackBtn = this.add.dom(cx, 900, "button", {
+    this.escapeBtn = this.add.dom(100, 60, "button", 
+      `
+        font-size: 50px;
+        background-color: #333;
+        color: #fff;
+        font-family: 'title-font';
+        padding: 10px 20px;
+        border-radius: 10px;
+        border: 2px solid #000;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+        cursor: pointer;
+        user-select: none;
+        `, 
+        "Quit")
+    .setOrigin(0.5)
+    .setInteractive();
+
+    this.escapeBtn.node.onmouseenter = () => this.escapeBtn.node.style.backgroundColor = "#555";
+    this.escapeBtn.node.onmouseleave = () => this.escapeBtn.node.style.backgroundColor = "#333";
+    this.escapeBtn.addListener('click');
+    this.escapeBtn.on('click', () => {
+        this.scene.start('Home'); // replace 'Home' with your actual home scene key
+    });
+
+    this.attackBtn = this.add.dom(cx, 900, "button", {
       fontSize: "45px",
       backgroundColor: "#333",
       padding: "20px 40px",
@@ -114,7 +138,8 @@ export class Gameplay extends Phaser.Scene {
       
     } else {
       this.answerBox = this.add.dom(cx, 825, "input", {
-        type: "text",
+        type: "number",
+        step: "1",
         fontSize: "24px",
         width: "120px",
         textAlign: "center",

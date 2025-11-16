@@ -27,7 +27,7 @@ export class Home extends Phaser.Scene {
     const MathBtn = this.add.dom(cx - 320, 800, 'button',
       `
       background: #D6D422; 
-      color: #696969; 
+      color: #4E3021; 
       font-size: 50px; 
       font-family: 'title-font'; 
       padding: 20px 30px;  
@@ -50,7 +50,7 @@ export class Home extends Phaser.Scene {
     const AlgBtn = this.add.dom(cx, 800, 'button',
       `
       background: #D68522; 
-      color: #696969; 
+      color: #4E3021; 
       font-size: 50px; 
       font-family: 'title-font'; 
       padding: 20px 30px;  
@@ -69,7 +69,7 @@ export class Home extends Phaser.Scene {
     const TrigBtn = this.add.dom(cx + 320, 800, 'button',
       `
       background: #B31C21; 
-      color: #696969;
+      color: #4E3021;
       font-size: 50px; 
       font-family: 'title-font'; 
       padding: 20px 30px; 
@@ -89,7 +89,7 @@ export class Home extends Phaser.Scene {
       `
       background: #696969;
       font-size: 32px;
-      color: #D6D422;
+      color: #4E3021;
       font-family: 'title-font';
       padding: 15px 100px; 
       border: none; 
@@ -126,7 +126,7 @@ export class Home extends Phaser.Scene {
             "• Solve math problems to attack.\n\n" +
             "• Wrong answers cause *you* to take damage.\n\n" +
             "• Reduce the monster’s HP to win!",
-          fontSize: 26,
+          fontSize: 30,
           color: "#000000",
           fontFamily: "title-font",
           offsetY: -90,
