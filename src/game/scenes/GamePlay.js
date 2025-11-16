@@ -1,20 +1,26 @@
 export class Gameplay extends Phaser.Scene {
   constructor() { super('Gameplay'); }
 
+  preload() {
+    this.load.image('background', 'assets/battle-bg.png')
+    this.load.image('mouse', 'assets/Mouse.png')
+  }
+  
   create() {
     this.cameras.main.setBackgroundColor('#C1E1C1');
+    const cx = this.cameras.main.centerX;
+    const cy = this.cameras.main.centerY;
+    this.add.image(cx, cy, 'background');
     
-    this.add.text(512, 40, "Battle!", {
-      fontSize: "32px",
+    this.add.text(cx, 100, "Battle!", {
+      fontSize: "80px",
       color: "#fff",
       fontFamily: 'title-font'
     }).setOrigin(0.5);
 
-    const cx = this.cameras.main.centerX; 
-    const cy = this.cameras.main.centerY; 
     const spacing = 700; // Distance between the two circles
     
-    this.player = this.add.circle(cx - spacing/2, cy - 75, 40, 0x00ccff);
+    this.player = this.add.image(cx - spacing/2, cy, 'mouse').setScale(0.09);
     this.playerHP = 100;
 
     this.monster = this.add.circle(cx + spacing/2, cy - 75, 40, 0xff4444);
@@ -22,12 +28,12 @@ export class Gameplay extends Phaser.Scene {
 
     const playerHP = "Player HP: 100"
     const monsterHP = "Monster HP: 100"
-    this.playerHPText = this.add.text(cx - spacing/2, 200, playerHP, { fontSize: "24px", color: "#fff", fontFamily: 'title-font'}).setOrigin(0.5);
-    this.monsterHPText = this.add.text(cx + spacing/2, 200, monsterHP, { fontSize: "24px", color: "#fff", fontFamily: 'title-font' }).setOrigin(0.5);
+    this.playerHPText = this.add.text(cx - spacing/2, 200, playerHP, { fontSize: "50px", color: "#fff", fontFamily: 'title-font'}).setOrigin(0.5);
+    this.monsterHPText = this.add.text(cx + spacing/2, 200, monsterHP, { fontSize: "50px", color: "#fff", fontFamily: 'title-font' }).setOrigin(0.5);
 
     // Attack button (only shown at beginning)
-    this.attackBtn = this.add.text(512, 500, "START BATTLE", {
-      fontSize: "28px",
+    this.attackBtn = this.add.text(cx, 800, "START BATTLE", {
+      fontSize: "45px",
       backgroundColor: "#333",
       padding: { x: 20, y: 10 },
       color: "#fff",
@@ -47,7 +53,6 @@ export class Gameplay extends Phaser.Scene {
   }
 
   startMathProblem() {
-    // Check if game is over
     if (this.playerHP <= 0 || this.monsterHP <= 0) {
       this.gameOver();
       return;
@@ -56,17 +61,21 @@ export class Gameplay extends Phaser.Scene {
     const a = Phaser.Math.Between(1, 10);
     const b = Phaser.Math.Between(1, 10);
 
+    const cx = this.cameras.main.centerX;
+    const cy = this.cameras.main.centerY;
+
     this.correctAnswer = a + b;
 
-    this.problemText = this.add.text(512, 400, `${a} + ${b} = ?`, {
+    this.problemText = this.add.text(cx, 750, `${a} + ${b} = ?`, {
       fontSize: "32px",
       backgroundColor: "#A7C7E7",
-      padding: { x: 20, y: 10 },
+      padding: { x: 40, y: 20 },
+      margin: { x: 0, y: 10 },
       color: "#fff"
     }).setOrigin(0.5);
 
     // Create HTML input 
-    this.answerBox = this.add.dom(512, 460, "input", {
+    this.answerBox = this.add.dom(cx, 820, "input", {
       type: "text",
       fontSize: "24px",
       width: "120px",
@@ -91,11 +100,9 @@ export class Gameplay extends Phaser.Scene {
     if (userAns === this.correctAnswer) {
       this.monsterHP -= 20;
       this.monsterHPText.setText("Monster HP: " + this.monsterHP);
-      this.flashSprite(this.monster, 0xffaaaa);
     } else {
       this.playerHP -= 20;
       this.playerHPText.setText("Player HP: " + this.playerHP);
-      this.flashSprite(this.player, 0xaaaaff);
     }
 
     if (this.playerHP <= 0 || this.monsterHP <= 0) {
@@ -103,7 +110,6 @@ export class Gameplay extends Phaser.Scene {
         this.gameOver();
       });
     } else {
-      // Small delay before next question
       this.time.delayedCall(800, () => {
         this.startMathProblem();
       });
@@ -118,12 +124,5 @@ export class Gameplay extends Phaser.Scene {
       playerHP: this.playerHP,
       monsterHP: this.monsterHP
     });
-  }
-
-  // Simple hit flash effect
-  flashSprite(sprite, color) {
-    const original = sprite.fillColor;
-    sprite.setFillStyle(color);
-    this.time.delayedCall(200, () => sprite.setFillStyle(original));
   }
 }
