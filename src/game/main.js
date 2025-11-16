@@ -1,6 +1,7 @@
 import Phaser, { AUTO, Game } from 'phaser';
 import { Home } from './scenes/Home';
 import { Gameplay } from './scenes/Gameplay';
+import { GameOver } from './scenes/GameOver.js';
 
 const config = {
     type: AUTO,
@@ -20,6 +21,7 @@ const config = {
     scene: [
         Home,
         Gameplay,
+        GameOver
     ]
 };
 
